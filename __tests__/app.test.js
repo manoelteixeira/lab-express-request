@@ -1,7 +1,7 @@
 const request = require("supertest");
 
-const app = require("./app");
-const pokemon = require("./models/pokemon.json");
+const app = require("../app");
+const pokemon = require("../models/pokemon.json");
 
 describe("app", () => {
   describe("/", () => {
@@ -31,7 +31,9 @@ describe("app", () => {
       const response = await request(app).get(`/bugs/199`);
 
       expect(response.text).toContain("199 little bugs in the code");
-      expect(response.text).toMatch(/href.*201.*Pull one down\, patch it around/);
+      expect(response.text).toMatch(
+        /href.*201.*Pull one down\, patch it around/
+      );
     });
   });
 
@@ -51,7 +53,9 @@ describe("app", () => {
     });
 
     it("sends the Pokemon when the name exactly matches", async () => {
-      const response = await request(app).get(`/pokemon/search?name=${pokemon[0].name}`);
+      const response = await request(app).get(
+        `/pokemon/search?name=${pokemon[0].name}`
+      );
 
       expect(JSON.parse(response.text)).toEqual([pokemon[0]]);
     });
@@ -67,11 +71,9 @@ describe("app", () => {
 
   describe("/pokemon/:index", () => {
     it("sends a match when the index matches a Pokemon", async () => {
-      
       const response = await request(app).get("/pokemon/123");
 
       expect(JSON.parse(response.text)).toEqual(pokemon[123]);
-
     });
 
     it("sends a sorry message when no Pokemon is found at the index", async () => {
